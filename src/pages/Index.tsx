@@ -1,13 +1,28 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Hero } from "@/components/landing/Hero";
+import { Features } from "@/components/landing/Features";
+import { Pipeline } from "@/components/landing/Pipeline";
+import { GraphVisualization } from "@/components/graph/GraphVisualization";
+import { QueryInterface } from "@/components/query/QueryInterface";
+import { DummyDataManager } from "@/components/data/DummyDataManager";
+import { DummyDataInitializer } from "@/components/data/DummyDataInitializer";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <main className="min-h-screen bg-background">
+      <DummyDataInitializer />
+      <Hero />
+      <Features />
+      <Pipeline />
+      <div className="container mx-auto px-4 py-20">
+        <DummyDataManager />
       </div>
-    </div>
+      <div className="container mx-auto px-4 py-20">
+        <GraphVisualization />
+      </div>
+      <div className="container mx-auto px-4 py-20">
+        <QueryInterface />
+      </div>
+    </main>
   );
 };
 
