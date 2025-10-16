@@ -40,69 +40,39 @@ The system also integrates **real-time resource optimization**, **intelligent ca
 
 ---
 
-## 🧠 System Architecture
 
-```mermaid
-graph TD
-    A[User Query Interface] --> B[LLM Request Manager]
-    B --> C[Google Gemini API (Free Tier)]
-    C --> D[Response Processor]
-    D --> E[Fine-Tuning Layer (Hallucination Reduction)]
-    E --> F[Storage Optimizer & Cache Controller]
-    F --> G[Output Renderer / Frontend UI]
-    G --> H[User Feedback Loop]
-    H --> I[Agent Optimization Engine]
-    I --> B
+## 🧰 Tech Stack
+- Layer	Technology
+- Frontend	React / Next.js with TailwindCSS
+- Backend	Python (FastAPI / Flask)
+- LLM	Google Gemini (instead of OpenAI API)
+- Database	MongoDB / Firestore (for agent states & logs)
+- Dummy Data Simulation
+- Deployment on Vercel
+  
+## 📊 Workflow (Excalidraw Reference)
 
-    subgraph Optimization Subsystem
-        F
-        I
-    end
+The system workflow diagram available here : 
 
-    subgraph Fine-Tuning & Validation
-        D
-        E
-    end
-
-🧰 Tech Stack
-Layer	Technology
-Frontend	React / Next.js with TailwindCSS
-Backend	Python (FastAPI / Flask)
-LLM	Google Gemini (instead of OpenAI API)
-Database	MongoDB / Firestore (for agent states & logs)
-Dummy Data Simulation	Bolt SDK
-Deployment	Docker + Cloud Run / Vercel
-Monitoring	Prometheus + Grafana
-📊 Workflow (Excalidraw Reference)
-
-The system workflow diagram (available in the project folder) clearly illustrates:
-
-Query flow from user to Gemini LLM.
-
-Optimization feedback cycle for reducing redundant agent activations.
-
-Storage control mechanism for compressing unused vector data.
-
-Fine-tuning integration loop to continuously reduce hallucinations.
-
-🌟 Why Our Approach Is Better
+## 🌟 Why Our Approach Is Better
 Challenge	Existing Systems	Our Solution
-High Cost of APIs	OpenAI APIs require paid credits.	Uses Google Gemini’s free-tier API, providing zero-cost access with competitive performance.
-Resource Inefficiency	Agents stay active even when idle, wasting computation.	Agent Optimization Engine activates only necessary agents based on load and context.
-Storage Overload	Repetitive storage of embeddings and logs.	Smart Cache & Vector Reuse minimizes redundant saves and compresses unused memory blocks.
-LLM Hallucinations	Models output fabricated or uncertain responses.	Fine-tuning + Self-verification pipeline ensures only accurate, high-confidence outputs.
-Poor UX / Transparency	Users don’t see how LLMs behave internally.	User-centered dashboard visualizes real-time agent metrics, improving interpretability.
-🔍 Future Scope
+- High Cost of APIs	OpenAI APIs require paid credits.	Uses Google Gemini’s free-tier API, providing zero-cost access with competitive performance.
+- Resource Inefficiency	Agents stay active even when idle, wasting computation.	Agent Optimization Engine activates only necessary agents based on load and context.
+- Storage Overload	Repetitive storage of embeddings and logs.	Smart Cache & Vector Reuse minimizes redundant saves and compresses unused memory blocks.
+- LLM Hallucinations	Models output fabricated or uncertain responses.	Fine-tuning + Self-verification pipeline ensures only accurate, high-confidence outputs.
+- Poor UX / Transparency	Users don’t see how LLMs behave internally.	User-centered dashboard visualizes real-time agent metrics, improving interpretability.
 
-Add agent collaboration graph for multi-agent task orchestration.
+## 🔍 Future Scope
 
-Integrate retrieval-augmented generation (RAG) with vector databases.
+- Add agent collaboration graph for multi-agent task orchestration (Definitely Lyzr 😜).
 
-Support Gemini 2.0 multimodal fusion (text + image + video + document).
+- Integrate retrieval-augmented generation (RAG) with vector databases.
 
-Add auto-scaling agents with GPU utilization metrics.
+- Support Gemini 2.0 multimodal fusion (text + image + video + document).
 
-📁 Repository Structure
+- Add auto-scaling agents with GPU utilization metrics.
+
+## 📁 Repository Structure
 .
 ├── src/
 │   ├── backend/
@@ -136,10 +106,10 @@ python app.py
 
 🎥 Demo and Documentation
 
-🎬 Workflow Video: [Google Drive Link Here]
-🧩 System Workflow Diagram: workflow/system_workflow.excalidraw
+## 🎬 Workflow Video: [Google Drive Link Here]
 
-🏁 Conclusion
+
+## 🏁 Conclusion
 
 This system represents a next-generation LLM deployment approach — reducing costs, optimizing performance, and enhancing reliability through smart orchestration of AI agents and resources.
 By combining Gemini’s free and powerful API, optimization intelligence, and fine-tuned hallucination control, this project sets a new standard for efficient, trustworthy, and scalable AI systems.
