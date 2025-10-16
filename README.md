@@ -104,9 +104,9 @@ pip install -r requirements.txt
 # Run the backend
 python app.py
 
-🎥 Demo and Documentation
+## 🎥 Demo and Documentation
 
-## 🎬 Workflow Video: [Google Drive Link Here]
+- 🎬 Workflow Video: [Google Drive Link Here]
 
 
 ## 🏁 Conclusion
