@@ -52,7 +52,7 @@ The system also integrates **real-time resource optimization**, **intelligent ca
   
 ## 📊 Workflow (Excalidraw Reference)
 
-The system workflow diagram available here : 
+The system workflow diagram available here : https://excalidraw.com/#json=A1VOTRIQvNt7dzCFIkaz5,4jjMFMWVxJwHilx8z8qbcQ
 
 ## 🌟 Why Our Approach Is Better
 Challenge	Existing Systems	Our Solution
@@ -72,36 +72,18 @@ Challenge	Existing Systems	Our Solution
 
 - Add auto-scaling agents with GPU utilization metrics.
 
-## 📁 Repository Structure
-.
-├── src/
-│   ├── backend/
-│   │   ├── api/
-│   │   ├── optimization/
-│   │   └── storage_manager/
-│   ├── frontend/
-│   │   ├── components/
-│   │   └── pages/
-│   └── utils/
-│       └── gemini_client.py
-├── data/
-│   └── bolt_dummy_data.json
-├── workflow/
-│   └── system_workflow.excalidraw
-├── README.md
-└── requirements.txt
 
-🧪 Installation
-# Clone repository
+## 🧪 Installation
+- Clone repository
 git clone https://github.com/yourusername/AI-Agent-Optimizer.git
 
-# Navigate to project
+- Navigate to project
 cd AI-Agent-Optimizer
 
-# Install dependencies
+- Install dependencies
 pip install -r requirements.txt
 
-# Run the backend
+- Run the backend
 python app.py
 
 ## 🎥 Demo and Documentation
