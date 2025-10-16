@@ -14,7 +14,182 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      agent_metadata: {
+        Row: {
+          activity_state: string | null
+          agent_id: string
+          cpu_usage: number | null
+          created_at: string | null
+          id: string
+          last_active_at: string | null
+          memory_mb: number | null
+          response_latency_ms: number | null
+          uptime_seconds: number | null
+        }
+        Insert: {
+          activity_state?: string | null
+          agent_id: string
+          cpu_usage?: number | null
+          created_at?: string | null
+          id?: string
+          last_active_at?: string | null
+          memory_mb?: number | null
+          response_latency_ms?: number | null
+          uptime_seconds?: number | null
+        }
+        Update: {
+          activity_state?: string | null
+          agent_id?: string
+          cpu_usage?: number | null
+          created_at?: string | null
+          id?: string
+          last_active_at?: string | null
+          memory_mb?: number | null
+          response_latency_ms?: number | null
+          uptime_seconds?: number | null
+        }
+        Relationships: []
+      }
+      confidence_scores: {
+        Row: {
+          created_at: string | null
+          final_score: number
+          id: string
+          initial_score: number
+          passed_validation: boolean | null
+          query_id: string | null
+          reprompt_count: number | null
+          verification_method: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          final_score: number
+          id?: string
+          initial_score: number
+          passed_validation?: boolean | null
+          query_id?: string | null
+          reprompt_count?: number | null
+          verification_method?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          final_score?: number
+          id?: string
+          initial_score?: number
+          passed_validation?: boolean | null
+          query_id?: string | null
+          reprompt_count?: number | null
+          verification_method?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "confidence_scores_query_id_fkey"
+            columns: ["query_id"]
+            isOneToOne: false
+            referencedRelation: "query_cache"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      embeddings_cache: {
+        Row: {
+          access_count: number | null
+          compressed: boolean | null
+          content_hash: string
+          content_text: string
+          created_at: string | null
+          domain: string | null
+          embedding_vector: Json
+          id: string
+          last_accessed_at: string | null
+        }
+        Insert: {
+          access_count?: number | null
+          compressed?: boolean | null
+          content_hash: string
+          content_text: string
+          created_at?: string | null
+          domain?: string | null
+          embedding_vector: Json
+          id?: string
+          last_accessed_at?: string | null
+        }
+        Update: {
+          access_count?: number | null
+          compressed?: boolean | null
+          content_hash?: string
+          content_text?: string
+          created_at?: string | null
+          domain?: string | null
+          embedding_vector?: Json
+          id?: string
+          last_accessed_at?: string | null
+        }
+        Relationships: []
+      }
+      query_cache: {
+        Row: {
+          access_count: number | null
+          confidence_score: number | null
+          created_at: string | null
+          id: string
+          last_accessed_at: string | null
+          model_used: string | null
+          query_hash: string
+          query_text: string
+          response_text: string
+          verification_status: string | null
+        }
+        Insert: {
+          access_count?: number | null
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          model_used?: string | null
+          query_hash: string
+          query_text: string
+          response_text: string
+          verification_status?: string | null
+        }
+        Update: {
+          access_count?: number | null
+          confidence_score?: number | null
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          model_used?: string | null
+          query_hash?: string
+          query_text?: string
+          response_text?: string
+          verification_status?: string | null
+        }
+        Relationships: []
+      }
+      system_logs: {
+        Row: {
+          created_at: string | null
+          id: string
+          log_type: string
+          message: string
+          metadata: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          log_type: string
+          message: string
+          metadata?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          log_type?: string
+          message?: string
+          metadata?: Json | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
