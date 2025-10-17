@@ -91,6 +91,36 @@ export type Database = {
           },
         ]
       }
+      documents: {
+        Row: {
+          content: string
+          created_at: string | null
+          domain: string | null
+          id: string
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          domain?: string | null
+          id?: string
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          domain?: string | null
+          id?: string
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       embeddings_cache: {
         Row: {
           access_count: number | null
@@ -124,6 +154,54 @@ export type Database = {
           embedding_vector?: Json
           id?: string
           last_accessed_at?: string | null
+        }
+        Relationships: []
+      }
+      entities: {
+        Row: {
+          created_at: string | null
+          domain: string | null
+          id: string
+          name: string
+          properties: Json | null
+          type: string
+        }
+        Insert: {
+          created_at?: string | null
+          domain?: string | null
+          id?: string
+          name: string
+          properties?: Json | null
+          type: string
+        }
+        Update: {
+          created_at?: string | null
+          domain?: string | null
+          id?: string
+          name?: string
+          properties?: Json | null
+          type?: string
+        }
+        Relationships: []
+      }
+      ontologies: {
+        Row: {
+          created_at: string | null
+          domain: string
+          id: string
+          schema: Json
+        }
+        Insert: {
+          created_at?: string | null
+          domain: string
+          id?: string
+          schema: Json
+        }
+        Update: {
+          created_at?: string | null
+          domain?: string
+          id?: string
+          schema?: Json
         }
         Relationships: []
       }
@@ -165,6 +243,48 @@ export type Database = {
           verification_status?: string | null
         }
         Relationships: []
+      }
+      relationships: {
+        Row: {
+          created_at: string | null
+          id: string
+          relationship_type: string
+          source_entity_id: string | null
+          strength: number | null
+          target_entity_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          relationship_type: string
+          source_entity_id?: string | null
+          strength?: number | null
+          target_entity_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          relationship_type?: string
+          source_entity_id?: string | null
+          strength?: number | null
+          target_entity_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "relationships_source_entity_id_fkey"
+            columns: ["source_entity_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "relationships_target_entity_id_fkey"
+            columns: ["target_entity_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       system_logs: {
         Row: {
