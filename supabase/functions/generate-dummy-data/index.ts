@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { generateDummyDataSchema, createErrorResponse } from "../_shared/validation.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,11 +13,37 @@ serve(async (req) => {
   }
 
   try {
-    const { domain } = await req.json();
-    
+    // Create authenticated Supabase client
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const authHeader = req.headers.get('Authorization')!;
+    
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } }
+    });
+
+    // Verify authentication and check admin role
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return createErrorResponse(401, 'Authentication required', corsHeaders);
+    }
+
+    // Check if user has admin role
+    const { data: roles } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .single();
+
+    if (!roles) {
+      return createErrorResponse(403, 'Admin access required', corsHeaders);
+    }
+
+    // Parse and validate input
+    const body = await req.json();
+    const validated = generateDummyDataSchema.parse(body);
+    const { domain } = validated;
 
     console.log(`Generating dummy data for domain: ${domain}`);
 
@@ -26,15 +53,15 @@ serve(async (req) => {
     // Insert documents
     const { data: docData, error: docError } = await supabase
       .from('documents')
-      .insert(dummyData.documents)
+      .insert(dummyData.documents.map((doc: any) => ({ ...doc, user_id: user.id })))
       .select();
 
     if (docError) {
       console.error('Document insert error:', docError);
-      throw docError;
+      return createErrorResponse(500, 'Failed to generate data', corsHeaders);
     }
 
-    // Insert entities
+    // Insert entities (admin operation, no user_id needed)
     const { data: entityData, error: entityError } = await supabase
       .from('entities')
       .insert(dummyData.entities)
@@ -42,7 +69,7 @@ serve(async (req) => {
 
     if (entityError) {
       console.error('Entity insert error:', entityError);
-      throw entityError;
+      return createErrorResponse(500, 'Failed to generate data', corsHeaders);
     }
 
     // Insert relationships
@@ -57,13 +84,7 @@ serve(async (req) => {
         });
       }
 
-      const { error: relError } = await supabase
-        .from('relationships')
-        .insert(relationships);
-
-      if (relError) {
-        console.error('Relationship insert error:', relError);
-      }
+      await supabase.from('relationships').insert(relationships);
     }
 
     return new Response(
@@ -75,11 +96,7 @@ serve(async (req) => {
     );
   } catch (error) {
     console.error('Error generating dummy data:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-    return new Response(
-      JSON.stringify({ error: errorMessage }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return createErrorResponse(500, 'Failed to generate data', corsHeaders);
   }
 });
 

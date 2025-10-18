@@ -1,16 +1,1 @@
 project_id = "nitzppmblijxqfvlbywz"
-
-[functions.generate-dummy-data]
-verify_jwt = false
-
-[functions.process-query]
-verify_jwt = false
-
-[functions.optimize-agents]
-verify_jwt = false
-
-[functions.system-stats]
-verify_jwt = false
-
-[functions.reload-cache]
-verify_jwt = false

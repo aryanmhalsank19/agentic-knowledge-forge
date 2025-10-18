@@ -100,6 +100,7 @@ export type Database = {
           status: string | null
           title: string
           updated_at: string | null
+          user_id: string | null
         }
         Insert: {
           content: string
@@ -109,6 +110,7 @@ export type Database = {
           status?: string | null
           title: string
           updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
           content?: string
@@ -118,6 +120,7 @@ export type Database = {
           status?: string | null
           title?: string
           updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -132,6 +135,7 @@ export type Database = {
           embedding_vector: Json
           id: string
           last_accessed_at: string | null
+          user_id: string | null
         }
         Insert: {
           access_count?: number | null
@@ -143,6 +147,7 @@ export type Database = {
           embedding_vector: Json
           id?: string
           last_accessed_at?: string | null
+          user_id?: string | null
         }
         Update: {
           access_count?: number | null
@@ -154,6 +159,7 @@ export type Database = {
           embedding_vector?: Json
           id?: string
           last_accessed_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -205,6 +211,27 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       query_cache: {
         Row: {
           access_count: number | null
@@ -216,6 +243,7 @@ export type Database = {
           query_hash: string
           query_text: string
           response_text: string
+          user_id: string | null
           verification_status: string | null
         }
         Insert: {
@@ -228,6 +256,7 @@ export type Database = {
           query_hash: string
           query_text: string
           response_text: string
+          user_id?: string | null
           verification_status?: string | null
         }
         Update: {
@@ -240,6 +269,7 @@ export type Database = {
           query_hash?: string
           query_text?: string
           response_text?: string
+          user_id?: string | null
           verification_status?: string | null
         }
         Relationships: []
@@ -310,15 +340,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -445,6 +502,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
