@@ -27,24 +27,32 @@ export const QueryInterface = () => {
 
     setIsLoading(true);
     try {
-      // Store query in history (type cast to work around type generation timing)
-      await (supabase as any)
-        .from('query_history')
-        .insert({
-          query_text: query,
-          query_type: searchType,
-          results: [],
-          execution_time_ms: 0,
-        });
+      // Call the process-query edge function
+      const { data, error } = await supabase.functions.invoke('process-query', {
+        body: { 
+          query: query.trim(),
+          domain: searchType,
+          useCache: true 
+        }
+      });
 
-      // Simulate retrieval (in a real implementation, this would call backend functions)
+      if (error) {
+        console.error("Query error:", error);
+        toast.error("Failed to process query. Please try again.");
+        return;
+      }
+
       toast.success(`Query processed using ${searchType} search`);
       
-      // Mock results
+      // Display AI response
       setResults([
-        { entity: "Sample Entity 1", relevance: 0.95, type: "concept" },
-        { entity: "Sample Entity 2", relevance: 0.87, type: "treatment" },
-        { entity: "Sample Entity 3", relevance: 0.76, type: "disease" },
+        { 
+          entity: "AI Response", 
+          relevance: data.confidence || 0.85, 
+          type: "answer",
+          response: data.response,
+          cached: data.cached
+        }
       ]);
     } catch (error) {
       console.error("Query error:", error);
@@ -140,18 +148,40 @@ export const QueryInterface = () => {
                 <div className="font-semibold">Results:</div>
                 {results.map((result, index) => (
                   <Card key={index} className="p-4 bg-background/50 border-border">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-medium">{result.entity}</div>
-                        <Badge variant="outline" className="mt-1">{result.type}</Badge>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm text-muted-foreground">Relevance</div>
-                        <div className="text-lg font-bold text-primary">
-                          {(result.relevance * 100).toFixed(0)}%
+                    {result.type === "answer" ? (
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <div className="font-medium">AI Response</div>
+                            {result.cached && (
+                              <Badge variant="secondary" className="text-xs">Cached</Badge>
+                            )}
+                          </div>
+                          <div className="text-right">
+                            <div className="text-sm text-muted-foreground">Confidence</div>
+                            <div className="text-lg font-bold text-primary">
+                              {(result.relevance * 100).toFixed(0)}%
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-sm text-muted-foreground whitespace-pre-wrap">
+                          {result.response}
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="font-medium">{result.entity}</div>
+                          <Badge variant="outline" className="mt-1">{result.type}</Badge>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm text-muted-foreground">Relevance</div>
+                          <div className="text-lg font-bold text-primary">
+                            {(result.relevance * 100).toFixed(0)}%
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </Card>
                 ))}
               </div>

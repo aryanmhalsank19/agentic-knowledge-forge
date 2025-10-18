@@ -72,13 +72,63 @@ const Auth = () => {
     }
   };
 
+  const handleDemoLogin = async () => {
+    setLoading(true);
+    try {
+      // Try to login with demo credentials
+      let { error } = await supabase.auth.signInWithPassword({
+        email: "demo@example.com",
+        password: "demo123456",
+      });
+
+      // If demo user doesn't exist, create it
+      if (error && error.message.includes("Invalid")) {
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: "demo@example.com",
+          password: "demo123456",
+          options: {
+            emailRedirectTo: `${window.location.origin}/`,
+          },
+        });
+
+        if (signUpError) throw signUpError;
+
+        // Login after signup
+        const { error: loginError } = await supabase.auth.signInWithPassword({
+          email: "demo@example.com",
+          password: "demo123456",
+        });
+
+        if (loginError) throw loginError;
+      } else if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Demo Login",
+        description: "Logged in as demo user",
+      });
+      navigate("/");
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>{isLogin ? "Login" : "Sign Up"}</CardTitle>
           <CardDescription>
-            {isLogin ? "Welcome back to Agentic Graph RAG" : "Create an account to get started"}
+            {isLogin 
+              ? "Welcome back! Use demo login for instant access" 
+              : "Create an account to get started with the Agentic Graph RAG platform"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -117,6 +167,26 @@ const Auth = () => {
             >
               {isLogin ? "Need an account? Sign up" : "Have an account? Login"}
             </Button>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">Or</span>
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={handleDemoLogin}
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "🎭 Try Demo Login"}
+            </Button>
+            <p className="text-xs text-center text-muted-foreground">
+              Demo credentials: demo@example.com / demo123456
+            </p>
           </form>
         </CardContent>
       </Card>
