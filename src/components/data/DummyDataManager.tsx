@@ -68,11 +68,18 @@ export const DummyDataManager = () => {
     <section className="py-20">
       <div className="container mx-auto px-4">
         <div className="text-center space-y-4 mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 backdrop-blur-sm border border-primary/30 rounded-full mb-4">
+            <span className="text-sm font-semibold text-primary">Step 2</span>
+          </div>
           <h2 className="text-4xl md:text-5xl font-bold">
             Demo <span className="bg-clip-text text-transparent bg-[image:var(--gradient-primary)]">Datasets</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Load realistic dummy data across multiple domains to explore the platform
+          </p>
+          <p className="text-sm text-muted-foreground max-w-xl mx-auto px-4 py-3 bg-muted/30 rounded-lg border border-border">
+            💡 <strong>Tip:</strong> Each dataset contains entities (diseases, products, organizations) and relationships (treats, uses, supplies). 
+            Click any button to populate the knowledge graph!
           </p>
         </div>
 

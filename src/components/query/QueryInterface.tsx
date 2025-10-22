@@ -63,15 +63,27 @@ export const QueryInterface = () => {
   };
 
   return (
-    <section id="demo" className="py-20">
+    <section id="demo" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center space-y-4 mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 backdrop-blur-sm border border-accent/30 rounded-full mb-4">
+            <span className="text-sm font-semibold text-accent">Step 4</span>
+          </div>
           <h2 className="text-4xl md:text-5xl font-bold">
-            Agentic <span className="bg-clip-text text-transparent bg-[image:var(--gradient-primary)]">Retrieval</span>
+            AI Query <span className="bg-clip-text text-transparent bg-[image:var(--gradient-primary)]">Interface</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Query your knowledge graph with multiple retrieval strategies
+            Ask questions and get intelligent answers powered by your knowledge graph
           </p>
+          <div className="max-w-2xl mx-auto space-y-3">
+            <p className="text-sm text-muted-foreground px-4 py-3 bg-muted/30 rounded-lg border border-border">
+              🤖 <strong>Hallucination Reduction:</strong> Every answer includes a confidence score (0-100%). 
+              Low-confidence responses are automatically re-prompted for better accuracy!
+            </p>
+            <p className="text-sm text-primary font-medium">
+              Try asking: "What treats Type 2 Diabetes?" or "How does drip irrigation improve farming?"
+            </p>
+          </div>
         </div>
 
         <Card className="p-8 bg-card/50 backdrop-blur-sm border-border max-w-4xl mx-auto">

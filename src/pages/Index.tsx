@@ -8,6 +8,7 @@ import { GraphVisualization } from "@/components/graph/GraphVisualization";
 import { QueryInterface } from "@/components/query/QueryInterface";
 import { DummyDataManager } from "@/components/data/DummyDataManager";
 import { DummyDataInitializer } from "@/components/data/DummyDataInitializer";
+import { DemoGuide } from "@/components/demo/DemoGuide";
 import { Button } from "@/components/ui/button";
 import { LogOut, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -68,6 +69,7 @@ const Index = () => {
         </Button>
       </div>
       <DummyDataInitializer />
+      <DemoGuide />
       <Hero />
       <Features />
       <Pipeline />
