@@ -1,1 +1,4 @@
 project_id = "nitzppmblijxqfvlbywz"
+
+[functions.generate-dummy-data]
+verify_jwt = true

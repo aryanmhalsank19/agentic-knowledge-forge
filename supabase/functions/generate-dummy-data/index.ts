@@ -23,7 +23,8 @@ serve(async (req) => {
     });
 
     // Verify authentication and check admin role
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const jwt = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
+    const { data: { user }, error: authError } = await supabase.auth.getUser(jwt);
     if (authError || !user) {
       console.error('Auth error:', authError);
       return createErrorResponse(401, 'Authentication required', corsHeaders);

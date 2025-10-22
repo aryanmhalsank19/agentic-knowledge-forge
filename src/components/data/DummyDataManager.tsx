@@ -53,7 +53,12 @@ export const DummyDataManager = () => {
       toast.success(`Successfully loaded ${domain} dataset!`);
     } catch (error) {
       console.error("Error loading dummy data:", error);
-      toast.error("Failed to load dummy data");
+      const msg = (error as any)?.message ?? '';
+      if (typeof msg === 'string' && msg.includes('401')) {
+        toast.error("Authentication required. Please log in and try again.");
+      } else {
+        toast.error("Failed to load dummy data. Please try again.");
+      }
     } finally {
       setLoading(null);
     }
