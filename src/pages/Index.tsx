@@ -19,28 +19,24 @@ const Index = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check authentication status
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        navigate("/auth");
-        return;
-      }
-      
-      setUser(session.user);
-      setLoading(false);
-    };
-
-    checkAuth();
-
-    // Listen for auth changes
+    // Set up auth listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        setUser(null);
+        navigate("/auth");
+      } else {
+        setUser(session.user);
+      }
+    });
+
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
         navigate("/auth");
       } else {
         setUser(session.user);
       }
+      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
